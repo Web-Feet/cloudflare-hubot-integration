@@ -48,24 +48,23 @@ module.exports = function(robot) {
     	{
     		var request = http.request(reqOptions);
 
-            request.debug = true;
-
     		request.on('response', function(response) {
     		var body = '';
     		response.on('data', function(chunk) {
                 body += chunk;
     		});
     		response.on('end', function() {
-    			try {
-    				// parse returned respone data
-    				var parsed = JSON.parse(body);
-    				after(parsed);			
-    			} catch (err) {
-    				console.error('Unable to parse response as JSON', err);
-    			}
+    		try {
+    			// parse returned respone data
+    			var parsed = JSON.parse(body);
+    			after(parsed);			
+    		} catch (err) {
+    			console.error('Unable to parse response as JSON', err);
+    		}
 
     		});
-	    	}).on('error', function(err) {
+    		
+    		}).on('error', function(err) {
 	    		// return error if request unsuccessful
 	    		console.error('Error with the request:', err.message);
 	    	});
@@ -74,12 +73,12 @@ module.exports = function(robot) {
     	}
 
     	doRequest(options, function(data)
-		{
-			var zoneId = data.result[0].id;
-            var purge_everything = true;
+	{
+		var zoneId = data.result[0].id;
+            	var purge_everything = true;
             
-            api.zonePurgeCache(zoneId, purge_everything);
-            msg.send("CloudFlare cache successfully purged :godmode:");
-		});
+            	api.zonePurgeCache(zoneId, purge_everything);
+            	msg.send("CloudFlare cache successfully purged :godmode:");
+	});
     });
 }
