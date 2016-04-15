@@ -1,5 +1,5 @@
 # hubot-cloudflare
-CloudFlare API integration with Hubot.
+Purge all files within a CloudFlare zone using Hubot and Slack integration.
 
 <h3>Dependencies</h3>
 
