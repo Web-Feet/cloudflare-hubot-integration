@@ -1,3 +1,15 @@
+// Description:
+//   Purge all files on a single domain.
+//
+// Configuration:
+//   Add your CloudFlare API key and email address to the options variable.
+//
+// Commands:
+//   purge <domain> - Purges all files on the domain.
+//
+// Author:
+//   Web-Feet.co.uk
+
 module.exports = function(robot) {
 
     robot.hear(/purge (.*)/i, function(msg) {
