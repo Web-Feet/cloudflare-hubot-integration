@@ -14,8 +14,9 @@ module.exports = function(robot) {
 
     robot.hear(/purge (.*)/i, function(msg) {
 
+    	// Strip the domain
     	var domain = msg.match[1].replace('http://', '');
-    	var http = require('https');
+        domain = domain.replace('www.', '');
 
     	var options = {
     		hostname: 'api.cloudflare.com',
