@@ -4,6 +4,9 @@
 // Configuration:
 //   Add your CloudFlare API key and email address to the options variable.
 //
+// Dependencies:
+//  cloudflare4
+//
 // Commands:
 //   purge <domain> - Purges all files on the domain.
 //
@@ -14,7 +17,18 @@ module.exports = function(robot) {
 
     robot.hear(/purge (.*)/i, function(msg) {
 
-    	// Strip the domain
+        var http = require('https');
+        var CloudFlareAPI = require('cloudflare4');
+
+        var cloudflare_api = 'CLOUDFLARE_API_KEY';
+        var cloudflare_email = 'CLOUDFLARE_EMAIL_ADDRESS';
+
+        var api = new CloudFlareAPI({
+            email: cloudflare_email,
+            key: cloudflare_api,
+        });
+
+        // Strip the domain
     	var domain = msg.match[1].replace('http://', '');
         domain = domain.replace('www.', '');
 
@@ -24,9 +38,9 @@ module.exports = function(robot) {
     		port: 443,
     		method: 'GET',
     		headers: {
-    			'X-Auth-Email': 'YOUR_EMAIL_ADDRESS',
-    			'X-Auth-Key': 'YOUR_API_KEY',
-    			'Content-Type': 'application/json'
+    			'X-Auth-Email': cloudflare_email,
+    			'X-Auth-Key': cloudflare_api,
+    			'Content-Type': 'application/json',
     		}
     	};
 
@@ -34,10 +48,12 @@ module.exports = function(robot) {
     	{
     		var request = http.request(reqOptions);
 
+            request.debug = true;
+
     		request.on('response', function(response) {
     		var body = '';
     		response.on('data', function(chunk) {
-    			body += chunk;
+                body += chunk;
     		});
     		response.on('end', function() {
     			try {
@@ -53,20 +69,17 @@ module.exports = function(robot) {
 	    		// return error if request unsuccessful
 	    		console.error('Error with the request:', err.message);
 	    	});
+
 	    	request.end();
     	}
 
     	doRequest(options, function(data)
 		{
 			var zoneId = data.result[0].id;
-			var purge_options = options;
-			purge_options.path = '/client/v4/zones/' + zoneId + '/purge_cache';
-			purge_options.method = 'DELETE';
-			purge_options.qs = {"purge_everything":true};
-			doRequest(purge_options, function(afterData)
-			{
-				msg.send("CloudFlare cache successfully purged :godmode:");
-			});
+            var purge_everything = true;
+            
+            api.zonePurgeCache(zoneId, purge_everything);
+            msg.send("CloudFlare cache successfully purged :godmode:");
 		});
     });
 }
