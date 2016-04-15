@@ -1,6 +1,14 @@
 # hubot-cloudflare
 CloudFlare API integration with Hubot.
 
+<h3>Dependencies</h3>
+
+<ul>
+<li>cloudflare4</li>
+</ul>
+
+<code>npm install cloudflare4</code>
+
 <h3>Configuration</h3>
 Configure your CloudFlare email address and CloudFlare API key within the options headers of the cloudflare.js script. Once this has been done, save the changes and upload it to your bot's scripts directory.
 
