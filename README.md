@@ -3,9 +3,7 @@ CloudFlare API integration with Hubot.
 
 <h3>Dependencies</h3>
 
-<ul>
-<li>cloudflare4</li>
-</ul>
+This script requires the cloudflare4 npm package to run (https://www.npmjs.com/package/cloudflare4).
 
 <code>npm install cloudflare4</code>
 
